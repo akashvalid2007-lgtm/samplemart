@@ -1,0 +1,16 @@
+{
+  "name": "sudharshanmart",
+  "version-string": "1.1.0",
+  "description": "SudharshanMart - Native C++20 Multi-Seller Marketplace Backend and Full-Stack Platform",
+  "homepage": "https://github.com/sudharshan/sudharshanmart",
+  "dependencies": [
+    "drogon",
+    "nlohmann-json",
+    "libsodium",
+    "spdlog",
+    "sqlite3",
+    "libpqxx",
+    "gtest",
+    "curl"
+  ]
+}

@@ -1,0 +1,50 @@
+name: SudharshanMart CI Pipeline
+
+on:
+  push:
+    branches: [ main, "feature/**" ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Install System Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          cmake \
+          ninja-build \
+          clang-15 \
+          clang-tidy \
+          cppcheck \
+          libsqlite3-dev \
+          libsodium-dev \
+          libcurl4-openssl-dev \
+          libssl-dev \
+          uuid-dev \
+          libgtest-dev
+
+    - name: Run Static Analysis (cppcheck)
+      run: |
+        cppcheck --enable=all --inconclusive --std=c++20 --suppress=missingIncludeSystem src/
+
+    - name: Configure CMake with ASan & UBSan
+      run: |
+        cmake -B build -G Ninja \
+          -DCMAKE_BUILD_TYPE=Debug \
+          -DENABLE_ASAN=ON
+
+    - name: Build Executable and Test Suites
+      run: |
+        cmake --build build --config Debug
+
+    - name: Execute CTest Unit and Integration Suites
+      run: |
+        cd build && ctest --output-on-failure

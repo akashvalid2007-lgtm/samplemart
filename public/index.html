@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SudharshanMart — Next-Gen Multi-Seller Marketplace</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- FontAwesome icons for rich UI -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Top Announcement Bar -->
+    <div class="announcement-bar">
+        <span><i class="fa-solid fa-bolt"></i> Welcome to <strong>SudharshanMart</strong> — Native C++20 High Performance Marketplace (Created by Sudharshan)</span>
+        <div class="announcement-links">
+            <span id="systemHealthBadge" class="health-badge"><i class="fa-solid fa-circle-check"></i> C++ Backend UP</span>
+            <span class="currency-tag"><i class="fa-solid fa-indian-rupee-sign"></i> INR (Cents Encapsulated)</span>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="brand-logo" onclick="app.navigate('catalog')">
+                <div class="logo-icon"><i class="fa-solid fa-store"></i></div>
+                <div class="logo-text">
+                    <h1>Sudharshan<span>Mart</span></h1>
+                    <small>High Performance Native C++20</small>
+                </div>
+            </div>
+
+            <!-- Global Search Bar -->
+            <div class="search-container">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Search products, brands, electronics..." onkeyup="app.handleSearch(event)">
+                <select id="categorySelect" onchange="app.filterCategory(this.value)">
+                    <option value="">All Categories</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Audio">Audio</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Bags">Bags</option>
+                </select>
+                <button class="search-btn" onclick="app.executeSearch()"><i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Nav Actions & Role Switcher -->
+            <div class="nav-actions">
+                <div class="role-selector">
+                    <label for="activeRole"><i class="fa-solid fa-user-tag"></i> Active Role:</label>
+                    <select id="activeRole" onchange="app.switchRole(this.value)">
+                        <option value="BUYER">Buyer (Akash)</option>
+                        <option value="SELLER">Seller (TechNova)</option>
+                        <option value="ADMIN">Admin (Sudharshan)</option>
+                    </select>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <button class="nav-tab active" id="tabCatalog" onclick="app.navigate('catalog')">
+                    <i class="fa-solid fa-compass"></i> Explore
+                </button>
+                <button class="nav-tab" id="tabSeller" onclick="app.navigate('seller')">
+                    <i class="fa-solid fa-shop"></i> Seller Desk
+                </button>
+                <button class="nav-tab" id="tabAdmin" onclick="app.navigate('admin')">
+                    <i class="fa-solid fa-shield-halved"></i> Admin Panel
+                </button>
+                <button class="nav-tab" id="tabOrders" onclick="app.navigate('orders')">
+                    <i class="fa-solid fa-box"></i> My Orders
+                </button>
+
+                <!-- Cart Button with Counter -->
+                <button class="cart-trigger" onclick="app.toggleCartModal()">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-layout">
+        <!-- Hero Section -->
+        <section class="hero-banner" id="heroBanner">
+            <div class="hero-content">
+                <span class="hero-tag"><i class="fa-solid fa-microchip"></i> Powered by Native Drogon C++20 & Argon2id</span>
+                <h2>Speed, Precision & Reliability at Scale.</h2>
+                <p>Welcome to SudharshanMart — built with clean architecture, RAII transactions, parameterized queries, and real-time AI assistance.</p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary" onclick="app.scrollToProducts()"><i class="fa-solid fa-bag-shopping"></i> Start Shopping</button>
+                    <button class="btn btn-glass" onclick="app.openChat()"><i class="fa-solid fa-robot"></i> Ask SudharshanMart AI</button>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <h4>C++20</h4>
+                    <p>Sub-millisecond latency</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Argon2id</h4>
+                    <p>Zero plaintext exposure</p>
+                </div>
+                <div class="stat-card">
+                    <h4>BIGINT</h4>
+                    <p>Precise minor currency</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 1: Buyer Catalog View -->
+        <section id="catalogView" class="view-section active">
+            <div class="section-header">
+                <div>
+                    <h3 class="section-title">Trending Marketplace Products</h3>
+                    <p class="section-subtitle">Verified authentic goods directly from top merchants</p>
+                </div>
+                <div class="category-pills">
+                    <button class="pill active" onclick="app.filterCategory('')">All</button>
+                    <button class="pill" onclick="app.filterCategory('Electronics')">Electronics</button>
+                    <button class="pill" onclick="app.filterCategory('Audio')">Audio</button>
+                    <button class="pill" onclick="app.filterCategory('Accessories')">Accessories</button>
+                    <button class="pill" onclick="app.filterCategory('Bags')">Bags</button>
+                </div>
+            </div>
+
+            <!-- Product Cards Grid -->
+            <div class="products-grid" id="productsGrid">
+                <!-- Dynamically injected product cards -->
+            </div>
+        </section>
+
+        <!-- VIEW 2: Seller Dashboard & Listing Desk -->
+        <section id="sellerView" class="view-section">
+            <div class="section-header">
+                <div>
+                    <h3 class="section-title"><i class="fa-solid fa-shop"></i> Seller Operations Portal</h3>
+                    <p class="section-subtitle">Manage inventory, list products, track orders and review revenue</p>
+                </div>
+                <button class="btn btn-primary" onclick="app.openNewProductModal()"><i class="fa-solid fa-plus"></i> List New Product</button>
+            </div>
+
+            <!-- Seller Sales Dashboard Metrics (O3 Requirement) -->
+            <div class="seller-kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon icon-revenue"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                    <div class="kpi-meta">
+                        <small>Total Seller Revenue</small>
+                        <h3 id="sellerKpiRevenue">₹0.00</h3>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon icon-orders"><i class="fa-solid fa-truck-fast"></i></div>
+                    <div class="kpi-meta">
+                        <small>Fulfilled / Incoming Orders</small>
+                        <h3 id="sellerKpiOrders">0</h3>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon icon-products"><i class="fa-solid fa-boxes-stacked"></i></div>
+                    <div class="kpi-meta">
+                        <small>Active Listed Products</small>
+                        <h3 id="sellerKpiProducts">0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seller Product Inventory Table -->
+            <div class="content-panel">
+                <h4><i class="fa-solid fa-list-check"></i> My Product Listings</h4>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sellerProductsTable">
+                            <!-- Injected rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Incoming Orders For Seller -->
+            <div class="content-panel mt-4">
+                <h4><i class="fa-solid fa-receipt"></i> Incoming Orders for Your Products</h4>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>Buyer ID</th>
+                                <th>Status Workflow</th>
+                                <th>Total</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sellerOrdersTable">
+                            <!-- Injected rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 3: Admin Management Portal (F7 Requirement) -->
+        <section id="adminView" class="view-section">
+            <div class="section-header">
+                <div>
+                    <h3 class="section-title"><i class="fa-solid fa-shield-halved"></i> SudharshanMart Central Admin Panel</h3>
+                    <p class="section-subtitle">Super Admin: Sudharshan — Platform Governance & Moderation</p>
+                </div>
+                <span class="badge badge-admin"><i class="fa-solid fa-lock"></i> Seed Admin Auth Verified</span>
+            </div>
+
+            <div class="grid-2-cols">
+                <!-- All Users List -->
+                <div class="content-panel">
+                    <h4><i class="fa-solid fa-users"></i> Registered Users Directory</h4>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminUsersTable">
+                                <!-- Injected rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- All System Orders List -->
+                <div class="content-panel">
+                    <h4><i class="fa-solid fa-dolly"></i> All Marketplace Orders</h4>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Order #</th>
+                                    <th>Buyer ID</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                    <th>Created</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminOrdersTable">
+                                <!-- Injected rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Moderation Desk -->
+            <div class="content-panel mt-4">
+                <h4><i class="fa-solid fa-gavel"></i> Product Moderation Desk (Remove Inappropriate Listings)</h4>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Seller ID</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Moderate</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminModerationTable">
+                            <!-- Injected rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 4: Order History View (F6 Requirement) -->
+        <section id="ordersView" class="view-section">
+            <div class="section-header">
+                <div>
+                    <h3 class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> Order History & Live Tracking</h3>
+                    <p class="section-subtitle">Track fulfillment progress: Pending → Confirmed → Shipped → Delivered</p>
+                </div>
+            </div>
+
+            <div class="orders-list" id="buyerOrdersList">
+                <!-- Injected order cards -->
+            </div>
+        </section>
+    </main>
+
+    <!-- SLIDE-IN SHOPPING CART (F4 & F5 Requirement) -->
+    <div class="cart-drawer-overlay" id="cartOverlay" onclick="app.toggleCartModal()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-drawer-header">
+            <h3><i class="fa-solid fa-bag-shopping"></i> Your Cart</h3>
+            <button class="close-btn" onclick="app.toggleCartModal()">&times;</button>
+        </div>
+        <div class="cart-drawer-body" id="cartItemsContainer">
+            <!-- Dynamic Cart Items -->
+        </div>
+        <div class="cart-drawer-footer">
+            <div class="cart-subtotal">
+                <span>Running Total:</span>
+                <strong id="cartDrawerTotal">₹0.00</strong>
+            </div>
+            <button class="btn btn-primary btn-block" onclick="app.openCheckoutModal()">
+                <i class="fa-solid fa-credit-card"></i> Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL: Product Detail & Reviews (F8 Requirement) -->
+    <div class="modal-overlay" id="productDetailModal">
+        <div class="modal-container modal-lg">
+            <button class="modal-close" onclick="app.closeModal('productDetailModal')">&times;</button>
+            <div class="product-modal-grid">
+                <div class="modal-product-media">
+                    <img id="detailImg" src="" alt="Product">
+                </div>
+                <div class="modal-product-details">
+                    <span class="category-tag" id="detailCategory">Category</span>
+                    <h2 id="detailTitle">Product Title</h2>
+                    <div class="detail-price-row">
+                        <h3 class="price-val" id="detailPrice">₹0.00</h3>
+                        <span class="stock-badge" id="detailStock">In Stock</span>
+                    </div>
+                    <p id="detailDesc" class="product-desc-text">Description goes here...</p>
+
+                    <div class="detail-actions">
+                        <button class="btn btn-primary" onclick="app.addCurrentToCart()"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+                    </div>
+
+                    <!-- Reviews Section -->
+                    <div class="reviews-section mt-4">
+                        <h4><i class="fa-solid fa-star text-gold"></i> Verified Customer Reviews & Ratings</h4>
+                        <div class="reviews-list" id="detailReviewsList">
+                            <!-- Injected reviews -->
+                        </div>
+
+                        <!-- Write Review Form -->
+                        <div class="write-review-box mt-3">
+                            <h5>Write a Review</h5>
+                            <small class="text-muted">Available for buyers with completed orders</small>
+                            <div class="rating-input mt-2">
+                                <label>Star Rating:</label>
+                                <select id="newReviewRating">
+                                    <option value="5">★★★★★ (5 Stars)</option>
+                                    <option value="4">★★★★☆ (4 Stars)</option>
+                                    <option value="3">★★★☆☆ (3 Stars)</option>
+                                    <option value="2">★★☆☆☆ (2 Stars)</option>
+                                    <option value="1">★☆☆☆☆ (1 Star)</option>
+                                </select>
+                            </div>
+                            <textarea id="newReviewComment" rows="2" placeholder="Share your experience with this item..."></textarea>
+                            <button class="btn btn-secondary btn-sm mt-2" onclick="app.submitReview()"><i class="fa-solid fa-paper-plane"></i> Submit Review</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Mock Checkout (F5 Requirement) -->
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal-container">
+            <button class="modal-close" onclick="app.closeModal('checkoutModal')">&times;</button>
+            <h3><i class="fa-solid fa-shield-halved"></i> Secure Mock Checkout</h3>
+            <p class="text-muted">Multi-seller checkout with mock payment confirmation</p>
+
+            <form onsubmit="app.handleMockCheckout(event)" class="mt-3">
+                <div class="form-group">
+                    <label>Shipping Address:</label>
+                    <textarea id="checkoutAddress" required rows="2" placeholder="Street, Flat No., City, Pincode">Sudharshan Tech Park, Sector 4, Bangalore 560001</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Payment Method:</label>
+                    <div class="payment-options">
+                        <label class="radio-label">
+                            <input type="radio" name="paymentMethod" value="MOCK_UPI" checked>
+                            <span><i class="fa-solid fa-mobile-screen"></i> Mock UPI (GooglePay / PhonePe)</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="paymentMethod" value="MOCK_CARD">
+                            <span><i class="fa-solid fa-credit-card"></i> Mock Debit / Credit Card</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="paymentMethod" value="MOCK_NETBANKING">
+                            <span><i class="fa-solid fa-building-columns"></i> Mock NetBanking</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="order-summary-box">
+                    <div class="summary-line">
+                        <span>Cart Total:</span>
+                        <strong id="checkoutTotalAmount">₹0.00</strong>
+                    </div>
+                    <div class="summary-line text-success">
+                        <span>Shipping & Packaging:</span>
+                        <span>FREE</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mt-3">
+                    <i class="fa-solid fa-check-circle"></i> Confirm & Place Order
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Create / Edit Product (F2 Requirement) -->
+    <div class="modal-overlay" id="productFormModal">
+        <div class="modal-container">
+            <button class="modal-close" onclick="app.closeModal('productFormModal')">&times;</button>
+            <h3 id="productFormTitle"><i class="fa-solid fa-box-open"></i> List New Marketplace Product</h3>
+            <p class="text-muted">Enter product details to make it available to buyers immediately</p>
+
+            <form onsubmit="app.saveProductForm(event)" class="mt-3">
+                <input type="hidden" id="formProductId" value="">
+                <div class="form-group">
+                    <label>Product Name:</label>
+                    <input type="text" id="formProductName" required placeholder="e.g. UltraBook Pro 15">
+                </div>
+                <div class="form-group">
+                    <label>Category:</label>
+                    <select id="formProductCategory" required>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Audio">Audio</option>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Bags">Bags</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Price in INR (₹):</label>
+                        <input type="number" id="formProductPrice" required min="1" step="0.01" placeholder="45000">
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Quantity:</label>
+                        <input type="number" id="formProductStock" required min="1" placeholder="25">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Image URL:</label>
+                    <input type="url" id="formProductImage" placeholder="https://images.unsplash.com/photo-...">
+                </div>
+                <div class="form-group">
+                    <label>Description:</label>
+                    <textarea id="formProductDesc" required rows="3" placeholder="Detailed product specifications, warranty, features..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mt-3">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Publish Listing
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- AI CHATBOT FLOATING WIDGET (O4 Requirement) -->
+    <div class="ai-chat-widget">
+        <!-- Floating Chat Button -->
+        <button class="chat-launcher" id="chatLauncher" onclick="app.toggleChat()">
+            <i class="fa-solid fa-robot"></i>
+            <span class="chat-pulse"></span>
+        </button>
+
+        <!-- Chat Panel Window -->
+        <div class="chat-panel" id="chatPanel">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <div class="bot-avatar"><i class="fa-solid fa-robot"></i></div>
+                    <div>
+                        <h4>SudharshanMart AI</h4>
+                        <small><span class="online-dot"></span> Online • Domain Assistant</small>
+                    </div>
+                </div>
+                <button class="chat-close" onclick="app.toggleChat()">&times;</button>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-msg bot">
+                    <p>👋 Hello! I am your SudharshanMart AI Assistant. Ask me about product details, shipping times, return policies, or order status workflow!</p>
+                </div>
+            </div>
+
+            <!-- Quick FAQ Prompts -->
+            <div class="chat-quick-prompts">
+                <button onclick="app.askChatPrompt('What is the order status workflow?')">Status Flow</button>
+                <button onclick="app.askChatPrompt('What is your return policy?')">Returns</button>
+                <button onclick="app.askChatPrompt('Do you have laptops in stock?')">Laptops</button>
+            </div>
+
+            <div class="chat-input-row">
+                <input type="text" id="chatInput" placeholder="Ask a question..." onkeydown="if(event.key === 'Enter') app.sendChatMessage()">
+                <button onclick="app.sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Overlay -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+#pragma once
+
+#include "repository/IReviewRepository.h"
+#include "repository/DatabaseConnection.h"
+
+namespace sudharshan::sudharshanmart {
+
+class SqliteReviewRepository : public IReviewRepository {
+public:
+    explicit SqliteReviewRepository(DatabaseConnection& db_conn) : db_conn_(db_conn) {}
+
+    Review CreateReview(const Review& review) override;
+    std::vector<Review> FindByProductId(int64_t product_id) override;
+    bool HasUserPurchasedProduct(int64_t user_id, int64_t product_id) override;
+
+private:
+    DatabaseConnection& db_conn_;
+};
+
+} // namespace sudharshan::sudharshanmart
